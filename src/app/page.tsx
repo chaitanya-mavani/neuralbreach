@@ -680,6 +680,8 @@ export default function ThreatMapDashboard() {
     <div className="relative w-screen h-screen overflow-hidden bg-[#0F172A]">
       <div ref={chartRef} className="absolute inset-0 z-0" />
 
+      {/* ========== DESKTOP LAYOUT (lg+) — untouched ========== */}
+      <div className="hidden lg:block">
       {/* ================= HEADER BRANDING ================= */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -833,6 +835,122 @@ export default function ThreatMapDashboard() {
           </div>
         </div>
       </motion.div>
+      </div>{/* ===== end desktop layout ===== */}
+
+      {/* ========== MOBILE LAYOUT (< lg) ========== */}
+      <div className="lg:hidden absolute inset-0 z-10 flex flex-col overflow-hidden">
+
+        {/* Mobile Header */}
+        <div className="flex-shrink-0 bg-[#0F172A]/95 backdrop-blur-md border-b border-[#1E293B] px-4 py-3 space-y-2">
+
+          {/* Row 1: Logo + Active badge */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <ShieldAlert className="w-6 h-6 text-slate-300" />
+                <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-[#E11D48] rounded-full" />
+              </div>
+              <div>
+                <h1 className="text-base font-bold font-mono tracking-wider leading-none text-slate-100">
+                  NEURAL <span className="text-[#E11D48]">BREACH</span>
+                </h1>
+                <p className="text-[7px] text-slate-500 font-mono tracking-[3px] mt-0.5">AI ADVANCED SECURITY SOC</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 bg-[#0B1120] py-1 px-2 rounded border border-[#1E293B]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E11D48] animate-pulse" />
+              <span className="text-[8px] font-mono text-[#E11D48] tracking-wide uppercase font-semibold">ACTIVE</span>
+            </div>
+          </div>
+
+          {/* Row 2: Stats */}
+          <div className="grid grid-cols-3 bg-[#0B1120]/60 rounded-lg p-2 border border-[#1E293B]">
+            <div className="text-center">
+              <p className="text-[7px] font-mono text-slate-500 uppercase tracking-wider">Prompts</p>
+              <p className="text-xs font-mono font-bold text-slate-200 mt-0.5">{totalAttacks.toLocaleString()}</p>
+            </div>
+            <div className="text-center border-x border-[#1E293B]">
+              <p className="text-[7px] font-mono text-slate-500 uppercase tracking-wider">Breaches</p>
+              <p className="text-xs font-mono font-bold text-[#E11D48] mt-0.5">{successfulBreaches.toLocaleString()}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[7px] font-mono text-slate-500 uppercase tracking-wider">Vuln %</p>
+              <p className="text-xs font-mono font-bold text-[#D97706] mt-0.5">{displayVulnRate}%</p>
+            </div>
+          </div>
+
+          {/* Row 3: Live metrics pill */}
+          <div className="flex justify-around bg-[#0B1120]/40 rounded-lg px-2 py-1.5 border border-[#1E293B]">
+            <div className="flex items-center gap-1.5">
+              <Radio className="w-3 h-3 text-slate-400" />
+              <div>
+                <p className="text-[7px] font-mono text-slate-500 uppercase">Prompts/Min</p>
+                <p className="text-[10px] font-mono font-bold text-slate-200">{promptsPerMin}</p>
+              </div>
+            </div>
+            <div className="w-px bg-[#1E293B]" />
+            <div className="flex items-center gap-1.5">
+              <Globe className="w-3 h-3 text-[#8B5CF6]" />
+              <div>
+                <p className="text-[7px] font-mono text-slate-500 uppercase">Nodes</p>
+                <p className="text-[10px] font-mono font-bold text-[#8B5CF6]">{activeNodeCount}</p>
+              </div>
+            </div>
+            <div className="w-px bg-[#1E293B]" />
+            <div className="flex items-center gap-1.5">
+              <Wifi className="w-3 h-3 text-[#10B981]" />
+              <div>
+                <p className="text-[7px] font-mono text-slate-500 uppercase">Paths</p>
+                <p className="text-[10px] font-mono font-bold text-[#10B981]">{activeConnections}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Row 4: Nav buttons */}
+          <div className="grid grid-cols-2 gap-2">
+            <Link href="/fuzzer">
+              <button className="w-full flex items-center justify-center gap-1.5 text-[9px] font-mono font-semibold tracking-wider text-slate-300 hover:text-slate-100 bg-[#0B1120] hover:bg-[#1E293B] border border-[#1E293B] rounded-lg px-3 py-2 transition-all">
+                <Terminal className="w-3 h-3 text-[#E11D48]" />
+                GO TO AI BREACH
+              </button>
+            </Link>
+            <Link href="/about">
+              <button className="w-full flex items-center justify-center gap-1.5 text-[9px] font-mono font-semibold tracking-wider text-slate-300 hover:text-slate-100 bg-[#0B1120] hover:bg-[#1E293B] border border-[#1E293B] rounded-lg px-3 py-2 transition-all">
+                <ShieldAlert className="w-3 h-3 text-[#10B981]" />
+                ABOUT PROJECT
+              </button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Scrollable panels — tap to expand each */}
+        <div className="flex-1 overflow-y-auto bg-[#0B1120]/75 backdrop-blur-sm px-3 py-2">
+          <CollapsiblePanel title="Top Vulnerability Classes" icon={Crosshair} defaultOpen={false}>
+            <AttackVectorsPanel vectors={attackVectors} />
+          </CollapsiblePanel>
+          <CollapsiblePanel title="Target Infrastructure Status" icon={Brain} defaultOpen={false}>
+            <ModelsPanel models={models} />
+          </CollapsiblePanel>
+          <CollapsiblePanel title="Vulnerability Extraction Log" icon={AlertTriangle} defaultOpen={false}>
+            <JailbreaksFeed events={jailbreaks} />
+          </CollapsiblePanel>
+        </div>
+
+        {/* Bottom timeline */}
+        <div className="flex-shrink-0 bg-[#0F172A]/95 backdrop-blur-md px-4 py-2.5 border-t border-[#1E293B]">
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="flex items-center gap-1.5">
+              <BarChart3 className="w-3 h-3 text-slate-400" />
+              <span className="text-[8px] font-mono font-bold text-slate-300 uppercase tracking-wider">
+                Fuzzing Traffic
+              </span>
+            </div>
+            <span className="text-[8px] font-mono text-slate-500 uppercase tracking-wider">Live Buffer</span>
+          </div>
+          <TimelineBar data={timeline} />
+        </div>
+      </div>
+
     </div>
   );
 }
