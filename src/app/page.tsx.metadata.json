@@ -1,0 +1,5 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_OTHER",
+  "summary":  "Complete NeuralBreach dashboard page with ConfigPanel, LiveTerminal, DonutChart, StatsCards, and ResultsTable — all wired to the fuzzing engine with full attack flow, abort capability, and cyberpunk aesthetics.",
+  "updatedAt":  "2026-06-27T11:18:23.847750700Z"
+}
